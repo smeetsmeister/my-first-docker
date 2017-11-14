@@ -11,10 +11,10 @@ php71:
   build: ./phpfpm
   volumes:
     - ./code:/srv/www/site
-  links:
-    - db
-db:
-  image: mariadb
-  environment:
-    - MYSQL_ROOT_PASSWORD=root
-    - MYSQL_DATABASE=testdb
+#  links:
+#    - db
+#db:
+#  image: mariadb
+#  environment:
+#    - MYSQL_ROOT_PASSWORD=xxx
+#    - MYSQL_DATABASE=testdb
