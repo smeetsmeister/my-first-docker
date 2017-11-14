@@ -1,5 +1,5 @@
 webserver:
-  image: nginx:latest
+  image: nginx:alpine
   ports:
     - "80:80"
   volumes:
