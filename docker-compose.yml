@@ -1,7 +1,7 @@
 webserver:
   image: nginx:latest
   ports:
-    - "8080:80"
+    - "80:80"
   volumes:
     - ./code:/srv/www/site
     - ./nginxphp.conf:/etc/nginx/conf.d/site.conf
@@ -16,5 +16,5 @@ php71:
 #db:
 #  image: mariadb
 #  environment:
-#    - MYSQL_ROOT_PASSWORD=root
+#    - MYSQL_ROOT_PASSWORD=xxx
 #    - MYSQL_DATABASE=testdb
