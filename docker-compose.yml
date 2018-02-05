@@ -57,10 +57,10 @@ services:
       build:
         context: .
         args:
-            GROUPID: $group
-            USERID: $user
+            GROUPID: 1001
+            USERID: 1001
         dockerfile: phpFpm/Dockerfile
-      env_file: .env
+#      env_file: .env
       container_name: php-fpm
       working_dir: /code
       volumes:
