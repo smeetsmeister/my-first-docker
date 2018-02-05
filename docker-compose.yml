@@ -12,7 +12,7 @@ webserver:
     - ./nginxphp.conf:/etc/nginx/conf.d/site.conf
   links:
     - php71
-    
+
 php71:
   build: ./phpfpm
   volumes:
@@ -24,14 +24,16 @@ db:
   image: mysql:5.6
   container_name: mysql
   working_dir: /application
+  env_file:
+      - ./.env
   volumes:
     - ./data:/docker-entrypoint-initdb.d
     - mysqldata:/var/lib/mysql
   environment:
-    - MYSQL_ROOT_PASSWORD=xxx
+    - MYSQL_ROOT_PASSWORD=$msyql_root_pwd
     - MYSQL_DATABASE=testdb
-    - MYSQL_USER=test
-    - MYSQL_PASSWORD=xxx
+    - MYSQL_USER=$mysql_user
+    - MYSQL_PASSWORD=$mysql_pwd
   ports:
     - "8084:3306"
 
