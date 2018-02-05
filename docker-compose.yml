@@ -30,7 +30,7 @@ db:
     - ./data:/docker-entrypoint-initdb.d
     - mysqldata:/var/lib/mysql
   environment:
-    - MYSQL_ROOT_PASSWORD=$msyql_root_pwd
+    - MYSQL_ROOT_PASSWORD=$mysql_root_pwd
     - MYSQL_DATABASE=testdb
     - MYSQL_USER=$mysql_user
     - MYSQL_PASSWORD=$mysql_pwd
