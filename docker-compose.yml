@@ -1,16 +1,16 @@
-webserver:
-  image: nginx:alpine
-  ports:
-    - "80:80"
-  volumes:
-    - ./code:/srv/www/site
-    - ./nginxphp.conf:/etc/nginx/conf.d/site.conf
-  links:
-    - php71
-php71:
-  build: ./phpfpm
-  volumes:
-    - ./code:/srv/www/site
+#webserver:
+#  image: nginx:alpine
+#  ports:
+#    - "80:80"
+#  volumes:
+#    - ./code:/srv/www/site
+#    - ./nginxphp.conf:/etc/nginx/conf.d/site.conf
+#  links:
+#    - php71
+#php71:
+#  build: ./phpfpm
+#  volumes:
+#    - ./code:/srv/www/site
 #  links:
 #    - db
 #db:
@@ -18,3 +18,69 @@ php71:
 #  environment:
 #    - MYSQL_ROOT_PASSWORD=xxx
 #    - MYSQL_DATABASE=testdb
+version: "3.1"
+services:
+    db:
+      image: mysql:5.6
+      container_name: mysql
+      working_dir: /application
+      volumes:
+        - ./data:/docker-entrypoint-initdb.d
+        - mysqldata:/var/lib/mysql
+      environment:
+        - MYSQL_ROOT_PASSWORD=xxx
+        - MYSQL_DATABASE=testdb
+        - MYSQL_USER=test
+        - MYSQL_PASSWORD=xxx
+      ports:
+        - "8084:3306"
+
+    composer:
+      image: composer:latest
+      container_name: composer
+      working_dir: /code
+
+    webserver:
+      image: nginx:alpine
+      container_name: webserver
+      working_dir: /code
+      volumes:
+          - ./code:/srv/www/site
+          - ./nginxphp.conf:/etc/nginx/conf.d/site.conf
+          - nginx-log-volume:/var/log/nginx
+      ports:
+       - "8080:80"
+      links:
+       - php-fpm
+
+    php-fpm:
+      build:
+        context: .
+        args:
+            GROUPID: $group
+            USERID: $user
+        dockerfile: phpFpm/Dockerfile
+      env_file: .env
+      container_name: php-fpm
+      working_dir: /code
+      volumes:
+        - ./code:/srv/www/site
+      links:
+        - db
+        - composer
+
+    phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      container_name: phpmyadmin
+      ports:
+        - "8081:80"
+      links:
+        - db
+
+volumes:
+  nginx-log-volume:
+    external: false
+  #application-log-volume:
+    #external: false
+  mysqldata:
+    external: false
